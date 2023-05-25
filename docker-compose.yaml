@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  green-rabbitmq:
+    image: rabbitmq:management
+    hostname: green-rabbitmq
+    container_name: green-rabbitmq
+    ports:
+      - target: 5672
+        published: 5656
+      - target: 15672
+        published: 15660
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=qBNUPHkRtTs8jKSf
+      - RABBITMQ_ERLANG_COOKIE=jmncsb74J6JVt3mnhBwj2btMFbLpFhHh
+  yellow-rabbitmq:
+    image: rabbitmq:management
+    hostname: yellow-rabbitmq
+    container_name: yellow-rabbitmq
+    links:
+      - "green-rabbitmq:green-rabbitmq"
+    ports:
+      - target: 5672
+        published: 5757
+      - target: 15672
+        published: 15770
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=v548VtJKL9smcIDQ
+      - RABBITMQ_ERLANG_COOKIE=jmncsb74J6JVt3mnhBwj2btMFbLpFhHh
+  red-rabbitmq:
+    image: rabbitmq:management
+    hostname: red-rabbitmq
+    container_name: red-rabbitmq
+    links:
+      - "yellow-rabbitmq:yellow-rabbitmq"
+    ports:
+      - target: 5672
+        published: 5858
+      - target: 15672
+        published: 15880
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=9RA7cKQy3uqPWksX
+      - RABBITMQ_ERLANG_COOKIE=jmncsb74J6JVt3mnhBwj2btMFbLpFhHh
